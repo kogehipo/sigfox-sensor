@@ -1,6 +1,6 @@
 #! /bin/bash
 
-URL="https://flask-sigfox-backend.herokuapp.com/post"
+URL="https://sigfox-sensor.herokuapp.com/post"
 #URL="http://localhost:5000/post"
 
 curl "$URL?temp=20.0"
