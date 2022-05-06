@@ -36,6 +36,7 @@ def connect_database():
 # 初期画面：これまで受信したデータの表示
 @app.route('/')
 def index():
+    print('DEBUG: Reached to index()')
     global cur
     connect_database()
     cur.execute('SELECT * FROM sensor_data')
@@ -43,12 +44,17 @@ def index():
     return render_template('index.html', page='menu', sensor_data=data)
  
 # センサーデータの受信
-@app.route('/post', methods=['GET'])
+@app.route('/post', methods=['GET', 'POST'])
 def post():
+    print('DEBUG: Reached to post()')
     # GETプロトコルでデータ受信
     try:
-        temp  = str(request.args.get('temp', default=-999.0, type=float))
-        humid = str(request.args.get('humid', default=-999.0, type=float))
+        if request.method == 'GET':
+            temp  = str(request.args.get('temp', default=-999.0, type=float))
+            humid = str(request.args.get('humid', default=-999.0, type=float))
+        else:
+            temp  = str(request.form['temp'])
+            humid = str(request.form['humid'])
     except Exception as e:
         return str(e)
  
@@ -65,7 +71,7 @@ def post():
  
     # 初期画面に遷移させる
     return redirect(url_for('index'))
- 
+
 @app.route('/graph')
 def graph():
     print('DEBUG: Reached to graph()')
@@ -104,4 +110,7 @@ def plot():
     return img_data
  
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    # MacのMontereyでは5000番ポートがふさがっているから変更する
+    # https://www.keisuke69.net/entry/2021/10/29/012608
+    app.run(debug=True, host='0.0.0.0', port=8000)

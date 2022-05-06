@@ -1,7 +1,7 @@
 #! /bin/bash
 
-URL="https://sigfox-sensor.herokuapp.com/post"
-#URL="http://localhost:5000/post"
+#URL="https://sigfox-sensor.herokuapp.com/post"
+URL="http://localhost:8000/post"
 
 curl "$URL?temp=20.0&humid=30.0"
 read -p "Hit Enter key."
